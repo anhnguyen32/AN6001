@@ -36,7 +36,8 @@ def GenAI_result():
     q = request.form.get("q")
     genai.configure(api_key=api)
     model = genai.GenerativeModel("gemini-1.5-flash")
-    r = model.generate_content(q)
+    generate=model.generate_content(q)
+    r = generate.candidates[0].content.parts[0].text
     return (render_template("GenAI_result.html",r=r))
 
 
