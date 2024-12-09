@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template,request
 import textblob
+import google.generativeai as genai
 import os
 
 api = os.getenv("markersuite")
@@ -31,8 +32,10 @@ def GenAI():
     return (render_template("GenAI.html"))
 
 @app.route("/GenAI_result",methods=['GET','POST']) 
-def SA_result():
+def GenAI_result():
     q = request.form.get("q")
+    genai.configure(api_key=api)
+    model = genai.GenerativeModel("gemini-1.5-flash")
     r = model.generate_content(q)
     return (render_template("GenAI_result.html",r=r))
 
