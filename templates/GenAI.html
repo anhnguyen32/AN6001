@@ -3,16 +3,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
+  
 </head>
+
+
 <body>
     <div class="container">
-        <h2> Sentiment Score: {{r}}</h2>
+        <h2> GenAI </h2>
        <!-- Your other HTML content goes here -->
-        <form action ="/main" method="post"> 
-            <p> <input type="submit" value ="End" > </p>
+        <p> Please enter user name: </p>
+        <form action ="/GenAI_result" method="post"> 
+            <p> <input type ="text" name ="q" > </p>
+            <p> <input type="submit" value ="Enter" > </p>
         </form>
-
     </div>
 
 </body>
+
 
