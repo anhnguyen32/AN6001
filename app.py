@@ -4,7 +4,7 @@ import textblob
 import google.generativeai as genai
 import os
 
-api = os.getenv("markersuite")
+api = os.getenv("makersuite")
 
 app = Flask(__name__)
 @app.route("/",methods=['GET','POST']) 
