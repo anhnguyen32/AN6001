@@ -1,0 +1,112 @@
+<head>
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <h2> Transfer Money </h2>
+       <!-- Your other HTML content goes here -->
+       
+        <input type="text" id="payer_add" placeholder="Enter payer address">
+        <input type="text" id="payee_add" placeholder="Enter payee address">
+        <input type="number" id="amount_to_transfer" placeholder="Enter amount to transfer">
+       
+        <button class="btn" onclick="transfer()">Transfer</button>
+        <button class="btn" onclick="transaction()">Transaction</button>
+        <form action ="/main" method="post"> 
+            <p> <input type="submit" value ="End" > </p>
+        </form>
+       
+        <p id="view_payer"></p>
+        <p id="view_payee"></p>
+        <p id="view_amount"></p>
+        <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+        <script>
+        const contractAddress = "0x495a58c0c5c125d770b3a103872efac7a48abec3";
+        const contractABI = [
+        {
+            "inputs": [],
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "address",
+                    "name": "view_payer",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "view_payee",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "view_amount",
+                    "type": "uint256"
+                }
+            ],
+            "name": "weixin",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "view_transaction",
+            "outputs": [
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "address",
+                    "name": "",
+                    "type": "address"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ];
+                                
+        const web3 = new Web3(Web3.givenProvider);
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+       
+        async function transfer() {
+            const accounts = await web3.eth.requestAccounts();
+            const payer_a = document.getElementById('view_payer').value;
+            const payee_a = document.getElementById('view_payee').value;
+            const amount_t = document.getElementById('view_amount').value;
+            console.log(payer_a);
+            console.log(payee_a);
+            console.log(amount_t);
+            console.log("accounts[0] " + accounts[0]);
+            await contract.methods.weixin(amount_t, payer_a, payee_a).send({ from: accounts[0]});
+        }
+       
+        async function transaction() {
+                const result = await contract.methods.view_transaction().call();
+                const payerAddress = result[0];
+                const payeeAddress = result[1];
+                const amountTransferred = result[2];
+       
+                document.getElementById('view_payer').innerText = "Payer: " + payerAddress;
+                document.getElementById('view_payee').innerText = "Payee: " + payeeAddress;
+                document.getElementById('view_amount').innerText = "Amount: " + amountTransferred;
+       }
+       </script>
+       
+    </div>
+
+</body>
+
